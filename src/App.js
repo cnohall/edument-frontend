@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios'
+// import ShowOnePath from './components/showOnePathPath';
+import ShowPaths from './components/showPaths';
+import shortid from 'shortid';
 
 class App extends React.Component {
   constructor(props) {
@@ -34,10 +37,8 @@ class App extends React.Component {
     } else {
       return (
         <div>
-        {data.map(data =>
-          <h1> {data.path} </h1>
-        )}
-        </div>
+          <ShowPaths key={shortid.generate()} data={data} />
+        </div>  
         );
     }
   }

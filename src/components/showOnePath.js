@@ -1,17 +1,29 @@
 import React from 'react';
 
-export default function ShowOnePath (props) {
-    console.log(props);
-    const path = props.path;
-    return (
-        <div onClick={printHello} className="onePath">
-        <h1>
-            {path}
-        </h1>
-        </div>
-    )
+export default class ShowOnePath extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            path: props.path,
+            clickedPath: props.onClickedPath,
+            relevantNodes: props.relevantNodes,
+        }
+    }
+
+
+
+    render (){
+        let {path, relevantNodes, clickedPath} = this.state;
+        return (
+            <div onClick={() =>handleClick(path, relevantNodes, clickedPath)} className="onePath">
+            <h1>
+                {path}
+            </h1>
+            </div>
+        )
+    }
 }
 
-function printHello (){
-    console.log("hello");
+function handleClick (path, relevantNodes, clickedPath){
+    clickedPath(path, relevantNodes);
 }

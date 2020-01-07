@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios'
-// import ShowOnePath from './components/showOnePathPath';
+
+import AddPath from './components/addPath'
 import ShowPaths from './components/showPaths';
 import shortid from 'shortid';
 import TreeNode from './components/treenode'
@@ -10,36 +11,40 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      originalNode: {},
       mainNode: {},
       loadingDone: false,
     }
   } 
+  home = () => {
+    this.setState({mainNode: this.state.originalNode})
+  }
 
   componentDidMount() {
     //Fetching paths
-    this.setState({ isLoading: true });
+    this.setState({ loadingDone: false });
     axios.get('https://edument-backend.herokuapp.com/')
     .then(res => {
       let mainNode = this.analyzeData(res.data)
-      this.setState({ mainNode, isLoading: false, loadingDone: true })
+      this.setState({ mainNode, loadingDone: true, originalNode: mainNode})
     });
-}
-
-analyzePaths = (data) => { 
-  let originalPaths = {};
-  const currentPaths = [];
-  for (let i = 0; i < data.length; i++){
-      const pathName = data[i].path; 
-      const relevantPath = pathName.split("/", 1);
-      if(!originalPaths[relevantPath]){
-          originalPaths[relevantPath] = [pathName];
-          currentPaths.push(relevantPath)
-      } else {
-          originalPaths[relevantPath].push(pathName)
-      }
   }
-  return {originalPaths, currentPaths}
-}
+
+  analyzePaths = (data) => { 
+    let originalPaths = {};
+    const currentPaths = [];
+    for (let i = 0; i < data.length; i++){
+        const pathName = data[i].path; 
+        const relevantPath = pathName.split("/", 1);
+        if(!originalPaths[relevantPath]){
+            originalPaths[relevantPath] = [pathName];
+            currentPaths.push(relevantPath)
+        } else {
+            originalPaths[relevantPath].push(pathName)
+        }
+    }
+    return {originalPaths, currentPaths}
+  }
 
 analyzeData = (data) => { 
   const mainNode = new TreeNode("Main Folder")
@@ -55,28 +60,28 @@ analyzeData = (data) => {
       previousNode = thisNode;
     }
   }
-  return mainNode
+  return mainNode;
 }
 
   render(){
-
     const { mainNode, loadingDone} = this.state;
+    if (loadingDone) {
+          return (
+            <div>
+              <button className="button" onClick={()=>this.home()}>Home</button>
+              <AddPath/>
+              <ShowPaths key={shortid.generate()} mainNode={mainNode} />
+            </div>  
+            );
+        } else {
+          return (
+            <div>
+            <h1>Loading ...</h1>
+            </div>
+          )
 
- if (loadingDone) {
-      return (
-        <div>
-          <ShowPaths key={shortid.generate()} mainNode={mainNode} />
-        </div>  
-        );
-    } else {
-      return (
-        <div>
-        <h1>Loading ...</h1>
-        </div>
-      )
-
-    }
-  }
+        }
+      }
 }
 
 export default App;

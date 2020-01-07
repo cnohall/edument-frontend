@@ -14,7 +14,6 @@ export default class ShowPaths extends React.Component {
             isLoading: false
         };
         this.organizeNodes = this.organizeNodes.bind(this);
-        this.home = this.home.bind(this);
     }
 
     componentWillMount = () => {
@@ -61,17 +60,11 @@ export default class ShowPaths extends React.Component {
         return true;
     }
 
-    home = () => {
-        this.setState({isLoading:true})
-        this.organizeNodes(this.state.originalMainNode);
-    }
-
     render(){
         let {currentMainNode} = this.state;
          if (!this.isEmpty(currentMainNode)) {
             return (
                 <div>
-                <button className="button" onClick={()=>this.home()}>Home</button>
                 <div className="paths">
                 {Object.keys(currentMainNode).map(path => 
                     <ShowOnePath key={shortid.generate()} onClickedPath={this.handleClickedPath} relevantNodes={currentMainNode} path={path}/>
@@ -82,7 +75,6 @@ export default class ShowPaths extends React.Component {
         } else {
             return (
                 <div>
-                    <button className="button" onClick={()=>this.home()}>Home</button>
                     <h1>Loading...</h1>
                 </div>
             )

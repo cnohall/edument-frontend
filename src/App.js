@@ -12,12 +12,13 @@ class App extends React.Component {
     super(props)
     this.state = {
       originalNode: {},
-      mainNode: {},
+      currentNode: {},
       loadingDone: false,
+      currentPath: "",
     }
   } 
   home = () => {
-    this.setState({mainNode: this.state.originalNode})
+    this.setState({currentNode: this.state.originalNode, currentPath: ""})
   }
 
   componentDidMount() {
@@ -25,52 +26,38 @@ class App extends React.Component {
     this.setState({ loadingDone: false });
     axios.get('https://edument-backend.herokuapp.com/')
     .then(res => {
-      let mainNode = this.analyzeData(res.data)
-      this.setState({ mainNode, loadingDone: true, originalNode: mainNode})
+      let currentNode = this.analyzeData(res.data)
+      this.setState({ currentNode, loadingDone: true, originalNode: currentNode})
     });
   }
 
-  analyzePaths = (data) => { 
-    let originalPaths = {};
-    const currentPaths = [];
-    for (let i = 0; i < data.length; i++){
-        const pathName = data[i].path; 
-        const relevantPath = pathName.split("/", 1);
-        if(!originalPaths[relevantPath]){
-            originalPaths[relevantPath] = [pathName];
-            currentPaths.push(relevantPath)
-        } else {
-            originalPaths[relevantPath].push(pathName)
-        }
-    }
-    return {originalPaths, currentPaths}
-  }
-
 analyzeData = (data) => { 
-  const mainNode = new TreeNode("Main Folder")
+  const currentNode = new TreeNode("Main Folder")
   let previousNode, thisNode;
   for (let i = 0; i < data.length; i++){
     const originalPathName = data[i].path; 
     const seperatedPathName = originalPathName.split("/");
     previousNode = new TreeNode(seperatedPathName[0]);
-    mainNode.children.push(previousNode)
+    currentNode.children.push(previousNode)
     for (let j = 1; j < seperatedPathName.length; j++){
       thisNode = new TreeNode(seperatedPathName[j]);
       previousNode.children.push(thisNode)
       previousNode = thisNode;
     }
   }
-  return mainNode;
+  return currentNode;
 }
 
+
+
   render(){
-    const { mainNode, loadingDone} = this.state;
+    const { currentPath, currentNode, loadingDone} = this.state;
     if (loadingDone) {
           return (
             <div>
               <button className="button" onClick={()=>this.home()}>Home</button>
               <AddPath/>
-              <ShowPaths key={shortid.generate()} mainNode={mainNode} />
+              <ShowPaths key={shortid.generate()} currentPath={currentPath} currentNode={currentNode} />
             </div>  
             );
         } else {

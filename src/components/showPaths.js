@@ -8,16 +8,16 @@ export default class ShowPaths extends React.Component {
         super(props)
         this.state = {
             clickedPath: false,
-            originalMainNode: props.mainNode,
-            currentMainNode: props.mainNode,
-            depth : 0,
+            currentMainNode: props.currentNode,
+            currentPath: props.currentPath,
             isLoading: false
         };
         this.organizeNodes = this.organizeNodes.bind(this);
+        // this.handleClickedPath = this.handleClickedPath.bind(this);
     }
 
     componentWillMount = () => {
-        this.organizeNodes(this.props.mainNode);
+        this.organizeNodes(this.props.currentNode);
     }
 
     organizeNodes = (node) =>{
@@ -43,7 +43,8 @@ export default class ShowPaths extends React.Component {
         if(!children[0][0]){
             return;
         }
-        this.setState({isLoading:true})
+        const pathToAdd = this.state.currentPath + clickedPath + "/";
+        this.setState({isLoading:true, currentPath: pathToAdd})
         //Create a new node and set it to the main node
         const newNode = new TreeNode(clickedPath);
         for (let i = 0; i < children.length; i++){
@@ -61,13 +62,15 @@ export default class ShowPaths extends React.Component {
     }
 
     render(){
-        let {currentMainNode} = this.state;
+        let {currentMainNode, currentPath} = this.state;
          if (!this.isEmpty(currentMainNode)) {
+             console.log(this.state.currentPath)
             return (
                 <div>
                 <div className="paths">
-                {Object.keys(currentMainNode).map(path => 
-                    <ShowOnePath key={shortid.generate()} onClickedPath={this.handleClickedPath} relevantNodes={currentMainNode} path={path}/>
+                {Object.keys(currentMainNode).map(onePath => 
+                    <ShowOnePath key={shortid.generate()} onClickedPath={this.handleClickedPath} 
+                    relevantNodes={currentMainNode} FileOrFolderName={onePath} currentPath={currentPath}/>
                 )}
                 </div>
                 </div>

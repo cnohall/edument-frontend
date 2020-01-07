@@ -1,25 +1,52 @@
 import React from 'react';
 
-export default class ShowOnePath extends React.Component {
+export default class ShowfolderOrFileName extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            path: props.path,
+            folderOrFileName: props.FileOrFolderName,
             clickedPath: props.onClickedPath,
             relevantNodes: props.relevantNodes,
+            currentPath: props.currentPath,
         }
     }
 
+    checkIfClickable = (folderOrFileName) => {
+        if (folderOrFileName[0][0]){
+            return "onePath"
+        } else {
+            return "unclickable"
+        }
+    }
 
+    deleteFolderOrFile = (relevantPath) => {
+        console.log("This should be deleted: " + relevantPath)
+    }
+
+    changeFolderOrFile = (relevantPath) => {
+        console.log("This should be changed: " + relevantPath)
+    }
 
     render (){
-        let {path, relevantNodes, clickedPath} = this.state;
+        let {currentPath, folderOrFileName, relevantNodes, clickedPath} = this.state;
+        const relevantPath = currentPath + folderOrFileName;
+        let mainDivClassName = this.checkIfClickable(relevantNodes[folderOrFileName])
         return (
-            <div onClick={() =>handleClick(path, relevantNodes, clickedPath)} className="onePath">
-            <h1>
-                {path}
-            </h1>
+            <div className={mainDivClassName} >
+            <h3 >
+                {folderOrFileName}
+            </h3>
+            {mainDivClassName === "onePath" && <i className="material-icons" onClick={() =>handleClick(folderOrFileName, relevantNodes, clickedPath)}>
+                folder_open
+            </i>}
+            <i className="material-icons" onClick={()=>this.deleteFolderOrFile(relevantPath)}>
+                delete
+            </i>
+            <i className="material-icons" onClick={()=>this.changeFolderOrFile(relevantPath)}>
+                create
+            </i>
             </div>
+
         )
     }
 }

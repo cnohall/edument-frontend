@@ -7,6 +7,15 @@
   pointer-events: none;
 }
 
+.material-icons {
+  font-size: 50px;
+  color: black;
+  cursor: pointer;
+  margin: 2%;
+  background-color: grey;
+  border-radius: 4px;
+}
+
 .paths {
   display: flex;
   flex-direction:row;
@@ -18,7 +27,19 @@
 .onePath {
   padding: 2vh;
   margin: 3vh;
-  background: #998575;
+  background: green;
+  border-radius: 5px;
+  text-align: center;
+  width: 25vw;
+  min-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.unclickable {
+  padding: 2vh;
+  margin: 3vh;
+  background: red;
   border-radius: 5px;
   text-align: center;
   width: 25vw;

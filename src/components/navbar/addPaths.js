@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useForm} from "react-hook-form";
 
 
-export default function AddPath () {
+export default function AddPaths () {
   const {register, handleSubmit, errors} = useForm();
   const errorMessage = "You need to write something";
   
@@ -23,7 +23,7 @@ export default function AddPath () {
   return (
     <div className="tabWindow">
     <div id="tabinfo">
-    <h3 className="logo">Add a new path</h3>
+    <h2 className="logo">Add a path</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type="text" placeholder="Pathname..." name="newPath" ref={register ({required:true})}/>
         <input className="button" type="submit" value="Add a path"/> 

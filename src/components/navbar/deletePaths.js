@@ -1,12 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 import {useForm} from "react-hook-form";
-
+// import SortedPathsList from "./sortPaths"
 
 export default function DeletePaths () {
   const {register, handleSubmit, errors} = useForm();
   const errorMessage = "You need to write something";
-  
+  // const [greeting, searchWord] = React.useState('');
+  // const state = {
+  //   searchWord : "",
+  //   list : "",
+  // };
+
+  // const updateSearchword = (event) => {
+  //   state.searchWord = event.target.value;
+  //   state.list = <SortedPathsList searchWord={state.searchWord}/>;
+  // }
+
   const onSubmit = (data) => {
     console.log(data)
     const deletePath = data.deletePath;
@@ -24,12 +34,12 @@ export default function DeletePaths () {
     <div className="tabWindow">
     <div id="tabinfo">
     <h2 className="logo">Delete a path</h2>
-
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" placeholder="Pathname..." name="deletePath" ref={register ({required:true})}/>
-        <input className="button" type="submit" value="Delete a path"/> 
-        {errors.deletePath && <p className="error"> {errorMessage}</p>}
+        <input type="text" placeholder="Pathname..." name="deletePath" ref={register ({required:true})} />
+        <input className="button" type="submit" value="Delete"/> 
       </form>
+      {errors.deletePath && <p className="error"> {errorMessage}</p>}
+      
     </div>
     </div>
   )

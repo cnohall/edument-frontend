@@ -10,14 +10,18 @@ export default function About() {
             <h4> 
                 This project is a coding test from Edument. Edument is short for EDUcation & MENTorship. It's not a regular company. 
                 Edument is looking for opportunities to both learn and teach others. It can be called a win-win situation.
+                </h4>
                 <h3> This project is created using the MERN-stack:</h3> 
+                <h4> 
                 <ul>
                     <li>MongoDB</li>
                     <li>Express</li>
                     <li>React</li>
                     <li>Node.js</li>
                 </ul>
+                </h4>
                 <h3> Features included in this project:</h3> 
+                <h4> 
                 <ul>
                     <li>Live version</li>
                     <li>Routes</li>

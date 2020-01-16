@@ -26,7 +26,7 @@ export default function AddPaths () {
     <h2 className="logo">Add a path</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type="text" placeholder="Pathname..." name="newPath" ref={register ({required:true})}/>
-        <input className="button" type="submit" value="Add a path"/> 
+        <input className="button" type="submit" value="Add"/> 
         {errors.newPath && <p className="error"> {errorMessage}</p>}
       </form>
     </div>

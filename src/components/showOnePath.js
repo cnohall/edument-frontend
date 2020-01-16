@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios'
+
+// const proxy = "https://cors-anywhere.herokuapp.com/";
 export default class ShowfolderOrFileName extends React.Component {
     constructor(props){
         super(props)

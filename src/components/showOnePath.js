@@ -1,5 +1,5 @@
 import React from 'react';
-
+import axios from 'axios'
 export default class ShowfolderOrFileName extends React.Component {
     constructor(props){
         super(props)
@@ -21,6 +21,10 @@ export default class ShowfolderOrFileName extends React.Component {
 
     deleteFolderOrFile = (relevantPath) => {
         console.log("This should be deleted: " + relevantPath)
+        axios.post('https://edument-backend.herokuapp.com/delete', {path: relevantPath})
+        .then(res => {
+          console.log(res);
+        })
     }
 
     changeFolderOrFile = (relevantPath) => {

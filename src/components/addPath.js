@@ -11,7 +11,7 @@ export default function AddPath () {
     console.log(data)
     const newPath = data.newPath;
     console.log(newPath)
-    axios.post('https://edument-backend.herokuapp.com/add', {path: newPath})
+    axios.post('https://edument-backend.herokuapp.com/path/add', {path: newPath})
     .then(res => {
       console.log(res);
     })

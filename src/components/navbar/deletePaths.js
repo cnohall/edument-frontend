@@ -21,7 +21,7 @@ export default function DeletePaths () {
     console.log(data)
     const deletePath = data.deletePath;
     console.log(deletePath)
-    axios.post('https://edument-backend.herokuapp.com/delete', {path: deletePath})
+    axios.post('https://edument-backend.herokuapp.com/path/delete', {path: deletePath})
     .then(res => {
       console.log(res);
     })

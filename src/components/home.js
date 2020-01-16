@@ -22,7 +22,7 @@ class Home extends React.Component {
   componentDidMount() {
     //Fetching paths
     this.setState({ loadingDone: false });
-    axios.get('https://edument-backend.herokuapp.com/')
+    axios.get('https://edument-backend.herokuapp.com/path/')
     .then(res => {
       let currentNode = this.analyzeData(res.data)
       this.setState({ currentNode, loadingDone: true, originalNode: currentNode})

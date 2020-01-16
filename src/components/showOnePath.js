@@ -23,7 +23,7 @@ export default class ShowfolderOrFileName extends React.Component {
 
     deleteFolderOrFile = (relevantPath) => {
         console.log("This should be deleted: " + relevantPath)
-        axios.post('https://edument-backend.herokuapp.com/delete', {path: relevantPath})
+        axios.post('https://edument-backend.herokuapp.com/path/delete', {path: relevantPath})
         .then(res => {
           console.log(res);
         })

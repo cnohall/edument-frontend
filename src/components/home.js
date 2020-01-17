@@ -24,6 +24,7 @@ class Home extends React.Component {
     this.setState({ loadingDone: false });
     axios.get('https://edument-backend.herokuapp.com/path/')
     .then(res => {
+      console.log(res.data)
       let currentNode = this.analyzeData(res.data)
       this.setState({ currentNode, loadingDone: true, originalNode: currentNode})
     });
@@ -56,6 +57,9 @@ analyzeData = (data) => {
             <div id="tabinfo">
                 <i className="material-icons" onClick={()=>this.home()}>
                     home
+                </i>
+                <i className="material-icons" onClick={()=>this.home()}>
+                  keyboard_backspace
                 </i>
               <ShowPaths key={shortid.generate()} currentPath={currentPath} currentNode={currentNode} />
             </div>  

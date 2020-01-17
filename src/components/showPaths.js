@@ -78,7 +78,7 @@ export default class ShowPaths extends React.Component {
         } else {
             return (
                 <div>
-                    <h1>Loading...</h1>
+                    <h1>There are no files nor any folders</h1>
                 </div>
             )
     

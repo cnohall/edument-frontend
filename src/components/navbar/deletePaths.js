@@ -6,6 +6,7 @@ import {useForm} from "react-hook-form";
 export default function DeletePaths () {
   const {register, handleSubmit, errors} = useForm();
   const errorMessage = "You need to write something";
+  const [message, setmessage] = React.useState(''); 
   // const [greeting, searchWord] = React.useState('');
   // const state = {
   //   searchWord : "",
@@ -16,6 +17,7 @@ export default function DeletePaths () {
   //   state.searchWord = event.target.value;
   //   state.list = <SortedPathsList searchWord={state.searchWord}/>;
   // }
+  
 
   const onSubmit = (data) => {
     console.log(data)
@@ -23,6 +25,7 @@ export default function DeletePaths () {
     console.log(deletePath)
     axios.post('https://edument-backend.herokuapp.com/path/delete', {path: deletePath})
     .then(res => {
+      setmessage("You've successfully deleted the path: " + data.deletePath);
       console.log(res);
     })
     .catch(function (error) {
@@ -39,7 +42,7 @@ export default function DeletePaths () {
         <input className="button" type="submit" value="Delete"/> 
       </form>
       {errors.deletePath && <p className="error"> {errorMessage}</p>}
-      
+      {message && <p className="error"> {message}</p>}
     </div>
     </div>
   )

@@ -9,7 +9,7 @@ import Home from "./components/home"
 import About from "./components/navbar/about"
 import Contact from "./components/navbar/contact"
 import AddPaths from "./components/navbar/addPaths"
-import DeletePaths from "./components/navbar/deletePaths"
+// import DeletePaths from "./components/navbar/deletePaths"
 import './App.css';
 
 
@@ -22,7 +22,7 @@ export default function App() {
           <Link className="link" to="/contact">Contact</Link>
           <Link className="link" to="/about">About</Link>
           <Link className="link" to="/addPaths">Add Paths</Link>
-          <Link className="link" to="/deletePaths">Delete Paths</Link>
+          {/* <Link className="link" to="/deletePaths">Delete Paths</Link> */}
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
@@ -37,9 +37,9 @@ export default function App() {
           <Route path="/addPaths">
             <AddPaths/>
           </Route>
-          <Route path="/deletePaths">
+          {/* <Route path="/deletePaths">
             <DeletePaths />
-          </Route>
+          </Route> */}
           <Route path="/">
             <Home />
           </Route>

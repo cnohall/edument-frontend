@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios'
 
-// const proxy = "https://cors-anywhere.herokuapp.com/";
 export default class ShowfolderOrFileName extends React.Component {
     constructor(props){
         super(props)
@@ -10,7 +9,10 @@ export default class ShowfolderOrFileName extends React.Component {
             clickedPath: props.onClickedPath,
             relevantNodes: props.relevantNodes,
             currentPath: props.currentPath,
-        }
+            deleted: false,
+        };
+        this.deleteFolderOrFile = this.deleteFolderOrFile.bind(this);
+        
     }
 
     checkIfClickable = (folderOrFileName) => {
@@ -25,6 +27,7 @@ export default class ShowfolderOrFileName extends React.Component {
         console.log("This should be deleted: " + relevantPath)
         axios.post('https://edument-backend.herokuapp.com/path/delete', {path: relevantPath})
         .then(res => {
+          this.setState({deleted: true})
           console.log(res);
         })
     }
@@ -34,7 +37,7 @@ export default class ShowfolderOrFileName extends React.Component {
     }
 
     render (){
-        let {currentPath, folderOrFileName, relevantNodes, clickedPath} = this.state;
+        let {currentPath, folderOrFileName, relevantNodes, clickedPath, deleted} = this.state;
         const relevantPath = currentPath + folderOrFileName;
         let mainDivClassName = this.checkIfClickable(relevantNodes[folderOrFileName])
         return (
@@ -51,6 +54,8 @@ export default class ShowfolderOrFileName extends React.Component {
             <i className="material-icons" onClick={()=>this.changeFolderOrFile(relevantPath)}>
                 create
             </i>
+            {mainDivClassName === "onePath" && deleted && <p className="error"> This folder and everything inside it has now been deleted</p>}
+            {mainDivClassName !== "onePath" && deleted && <p className="error"> This file has now been deleted</p>}
             </div>
 
         )

@@ -1,57 +1,71 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
+// import { Redirect } from "react-router-dom";
+// import shortid from 'shortid';
+// import ShowPaths from './showPaths';
 
-export default class ShowfolderOrFileName extends React.Component {
+export default class ShowfolderOrFile extends React.Component {
     constructor(props){
         super(props)
+        console.log(props)
         this.state = {
-            folderOrFileName: props.FileOrFolderName,
-            clickedPath: props.onClickedPath,
-            relevantNodes: props.relevantNodes,
-            currentPath: props.currentPath,
+            newPath: "",
+            pathClicked: false,
             deleted: false,
         };
         this.deleteFolderOrFile = this.deleteFolderOrFile.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+
+    }
+
+    folderNotPresent = () => {
         
     }
 
-    checkIfClickable = (folderOrFileName) => {
-        if (folderOrFileName[0][0]){
-            return "onePath"
+    checkIfFolderOrFile = () => {
+        if (true){
+            return "folder"
         } else {
-            return "unclickable"
+            return "file"
         }
     }
+    
+    handleClick = () => {
+        // let newPath = this.props.path + "/" + clickedFolder;
+        this.setState({pathClicked: true});
+    }
 
-    deleteFolderOrFile = (relevantPath) => {
-        console.log("This should be deleted: " + relevantPath)
-        axios.post('https://edument-backend.herokuapp.com/path/delete', {path: relevantPath})
+    deleteFolderOrFile = () => {
+        const pathToDelete = this.props.path + '/' + this.props.folder
+        console.log("This should be deleted: " + pathToDelete)
+        axios.post('https://edument-backend.herokuapp.com/path/delete', {pathToDelete})
         .then(res => {
           this.setState({deleted: true})
           console.log(res);
         })
     }
 
-    changeFolderOrFile = (relevantPath) => {
-        console.log("This should be changed: " + relevantPath)
+    changeFolderOrFile = (path) => {
+        const pathToUpdate = this.props.path + '/' + this.props.folder
+        console.log("This should be changed: " + pathToUpdate)
     }
 
     render (){
-        let {currentPath, folderOrFileName, relevantNodes, clickedPath, deleted} = this.state;
-        const relevantPath = currentPath + folderOrFileName;
-        let mainDivClassName = this.checkIfClickable(relevantNodes[folderOrFileName])
+        let {pathClicked, deleted} = this.state;
+        let path = this.props.path;
+        let mainDivClassName = this.checkIfFolderOrFile()
         return (
             <div className={mainDivClassName} >
             <h3 >
-                {folderOrFileName}
+                {path}
             </h3>
-            {mainDivClassName === "onePath" && <i className="material-icons" onClick={() =>handleClick(folderOrFileName, relevantNodes, clickedPath)}>
+            {mainDivClassName === "folder" && <i className="material-icons" onClick={() => this.handleClick()}>
                 folder_open
             </i>}
-            <i className="material-icons" onClick={()=>this.deleteFolderOrFile(relevantPath)}>
+            <i className="material-icons" onClick={()=>this.deleteFolderOrFile()}>
                 delete
             </i>
-            <i className="material-icons" onClick={()=>this.changeFolderOrFile(relevantPath)}>
+            <i className="material-icons" onClick={()=>this.changeFolderOrFile()}>
                 create
             </i>
             {mainDivClassName === "onePath" && deleted && <p className="error"> This folder and everything inside it has now been deleted</p>}
@@ -62,6 +76,5 @@ export default class ShowfolderOrFileName extends React.Component {
     }
 }
 
-function handleClick (path, relevantNodes, clickedPath){
-    clickedPath(path, relevantNodes);
-}
+
+ 

@@ -1,81 +1,75 @@
 import React from 'react';
-import axios from 'axios'
-
 import ShowPaths from './showPaths';
 import shortid from 'shortid';
-import TreeNode from './treenode'
+import axios from 'axios'
+import Loading from './simple/loading'
+// import TreeNode from './treenode'
 
 class Home extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props)
     this.state = {
-      originalNode: {},
-      currentNode: {},
+      allPaths: [],
+      currentPath: {},
       loadingDone: false,
-      currentPath: "",
-    }
-  } 
-  home = () => {
-    this.setState({currentNode: this.state.originalNode, currentPath: ""})
-  }
-
-  componentDidMount() {
-    //Fetching paths
-    this.setState({ loadingDone: false });
-    axios.get('https://edument-backend.herokuapp.com/path/')
-    .then(res => {
-      console.log(res.data)
-      let currentNode = this.analyzeData(res.data)
-      this.setState({ currentNode, loadingDone: true, originalNode: currentNode})
-    });
-  }
-
-analyzeData = (data) => { 
-  const currentNode = new TreeNode("Main Folder")
-  let previousNode, thisNode;
-  for (let i = 0; i < data.length; i++){
-    const originalPathName = data[i].path; 
-    const seperatedPathName = originalPathName.split("/");
-    previousNode = new TreeNode(seperatedPathName[0]);
-    currentNode.children.push(previousNode)
-    for (let j = 1; j < seperatedPathName.length; j++){
-      thisNode = new TreeNode(seperatedPathName[j]);
-      previousNode.children.push(thisNode)
-      previousNode = thisNode;
-    }
-  }
-  return currentNode;
+    };
 }
 
+  componentDidMount = () => {
+      axios.get(`https://edument-backend.herokuapp.com/path/find/`)
+          .then(res => {
+            let allPaths = [];
+            for (let i = 0; i < res.data.length; i++){
+              allPaths.push(res.data[i].path);
+            }
+            this.setState({ loadingDone:true, allPaths})
+            // console.log(res.data)
+            // let nodes = this.setUpNodes(res.data)
+            // this.setState({ loadingDone:true, nodes})
+      });
+  }
 
+  // setUpNodes = (data) => { 
+  //   const nodes = new TreeNode("Main Folder")
+  //   let previousNode, thisNode;
+  //   for (let i = 0; i < data.length; i++){
+  //     const pathName = data[i].path; 
+  //     const seperatedPathName = pathName.split("/");
+  //     previousNode = new TreeNode(seperatedPathName[0]);
+  //     nodes.children.push(previousNode)
+  //     for (let j = 1; j < seperatedPathName.length; j++){
+  //       thisNode = new TreeNode(seperatedPathName[j]);
+  //       previousNode.children.push(thisNode)
+  //       previousNode = thisNode;
+  //     }
+  //   }
+  //   return nodes;
+  // }
+
+  // seperatePathNames = (data, depth) =>{
+  //   const folders = {};
+  //   for (let i = 0; i < data.length; i++){
+  //       const originalPathName = data[i].path; 
+  //       const seperatedPathName = originalPathName.split("/")[depth];
+  //       folders[seperatedPathName] = seperatedPathName;
+  //   }
+  //   return folders;
+  // }
 
   render(){
-    const { currentPath, currentNode, loadingDone} = this.state;
-    if (loadingDone) {
-          return (
-            <div className="tabWindow">
-            <div id="tabinfo">
-                <i className="material-icons" onClick={()=>this.home()}>
-                    home
-                </i>
-                <i className="material-icons" onClick={()=>this.home()}>
-                  keyboard_backspace
-                </i>
-              <ShowPaths key={shortid.generate()} currentPath={currentPath} currentNode={currentNode} />
-            </div>  
-            </div>  
-            );
-        } else {
-          return (
-            <div className="tabWindow">
-            <div id="tabinfo">
-            <h1>Loading ...</h1>
-            </div>
-            </div>
-          )
-
-        }
-      }
+    let {allPaths, loadingDone} = this.state;
+    if (loadingDone){
+      return (
+        <div>
+          <ShowPaths key={shortid.generate()} allPaths={allPaths}/>
+        </div>  
+        );
+    } else {
+      return (
+        <Loading/>
+      )
+    }
+  }
 }
 
 export default Home;

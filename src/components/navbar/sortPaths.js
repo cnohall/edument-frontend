@@ -12,7 +12,7 @@ export default class SortedPathsList extends React.Component {
 
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         axios.get("https://edument-backend.herokuapp.com/path/")
         .then(res => {
           const result = res.data;

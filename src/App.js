@@ -9,8 +9,10 @@ import Home from "./components/home"
 import About from "./components/navbar/about"
 import Contact from "./components/navbar/contact"
 import AddPaths from "./components/navbar/addPaths"
+// import NoMatch from "./components/nomatch"
 // import DeletePaths from "./components/navbar/deletePaths"
 import './App.css';
+import ShowPathsURL from "./components/showPathsURL";
 
 
 export default function App() {
@@ -28,21 +30,16 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/contact">
-            <Contact />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/addPaths">
-            <AddPaths/>
-          </Route>
+          <Route exact path="/contact" component={Contact}/>
+          <Route exact path="/about" component={About}/>
+          <Route exact path="/addPaths"component={AddPaths}/>
+          <Route exact path="/" component={Home}/>
+          <Route path="*" component={ShowPathsURL}/>
+          {/* <Route path="*" component={NoMatch} />     */}
           {/* <Route path="/deletePaths">
             <DeletePaths />
           </Route> */}
-          <Route path="/">
-            <Home />
-          </Route>
+
         </Switch>
       </div>
     </Router>

@@ -3,6 +3,10 @@
 
 }
 
+.folderName {
+  font-size: 20px;
+  padding: 3px;
+}
 
 .searchResults {
   font-size: x-large;

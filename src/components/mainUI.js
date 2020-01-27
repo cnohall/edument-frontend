@@ -1,19 +1,18 @@
 import React from 'react';
 import shortid from 'shortid';
-import ShowOnePath from './showOnePath';
+import FolderUI from './folderUI';
 import TreeNode from './treenode'
+import Empty from './messages/empty'
 
-export default class ShowPaths extends React.Component {
+export default class MainUI extends React.Component {
     constructor(props){
         super(props)
         this.state = {
+            currentNode: {},
             clickedPath: false,
-            currentMainNode: props.currentNode,
-            currentPath: props.currentPath,
             isLoading: false
         };
         this.organizeNodes = this.organizeNodes.bind(this);
-        // this.handleClickedPath = this.handleClickedPath.bind(this);
     }
 
     componentWillMount = () => {
@@ -21,19 +20,19 @@ export default class ShowPaths extends React.Component {
     }
 
     organizeNodes = (node) =>{
-        let currentMainNode = node;
-        const children = currentMainNode.children;
+        let currentNode = node;
+        const children = currentNode.children;
         let nodes = {};
-        let currentNode;
+        let nextNode;
         for (let i = 0; i < children.length; i ++){
-            currentNode = children[i];
-            if (!nodes[currentNode.value]){
-                nodes[currentNode.value] = [currentNode.children]
+            nextNode = children[i];
+            if (!nodes[nextNode.value]){
+                nodes[nextNode.value] = [nextNode.children]
             } else {
-                nodes[currentNode.value].push(currentNode.children);
+                nodes[nextNode.value].push(nextNode.children);
             }
         }
-        this.setState({currentMainNode: nodes, isLoading:false})
+        this.setState({currentNode: nodes, isLoading:false})
     }
 
     handleClickedPath = (clickedPath, relevantNodes) => {
@@ -43,8 +42,7 @@ export default class ShowPaths extends React.Component {
         if(!children[0][0]){
             return;
         }
-        const pathToAdd = this.state.currentPath + clickedPath + "/";
-        this.setState({isLoading:true, currentPath: pathToAdd})
+
         //Create a new node and set it to the main node
         const newNode = new TreeNode(clickedPath);
         for (let i = 0; i < children.length; i++){
@@ -52,7 +50,7 @@ export default class ShowPaths extends React.Component {
         }
         this.organizeNodes(newNode);
     }
-
+    
     isEmpty = (obj) => { 
         for(var key in obj) {
             if(obj.hasOwnProperty(key))
@@ -62,24 +60,24 @@ export default class ShowPaths extends React.Component {
     }
 
     render(){
-        let {currentMainNode, currentPath} = this.state;
-         if (!this.isEmpty(currentMainNode)) {
-             console.log(this.state.currentPath)
+        let {currentNode} = this.state;
+         if (!this.isEmpty(currentNode)) {
             return (
                 <div>
                 <div className="paths">
-                {Object.keys(currentMainNode).map(onePath => 
-                    <ShowOnePath key={shortid.generate()} onClickedPath={this.handleClickedPath} 
-                    relevantNodes={currentMainNode} FileOrFolderName={onePath} currentPath={currentPath}/>
+                {Object.keys(currentNode).map(onePath => 
+                    <FolderUI key={shortid.generate()} 
+                    handleClickedPath={this.handleClickedPath} 
+                    currentNode={currentNode} 
+                    folderOrFileName={onePath}
+                    />
                 )}
                 </div>
                 </div>
             )
         } else {
             return (
-                <div>
-                    <h1>Loading...</h1>
-                </div>
+                <Empty/>
             )
     
         }

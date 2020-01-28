@@ -10,16 +10,17 @@ export default class MainUI extends React.Component {
         this.state = {
             currentNode: {},
             clickedPath: false,
-            isLoading: false
+            isLoading: false,
+            path: "",
         };
         this.organizeNodes = this.organizeNodes.bind(this);
     }
 
     componentWillMount = () => {
-        this.organizeNodes(this.props.currentNode);
+        this.organizeNodes(this.props.currentNode, "");
     }
 
-    organizeNodes = (node) =>{
+    organizeNodes = (node, path) =>{
         let currentNode = node;
         const children = currentNode.children;
         let nodes = {};
@@ -31,8 +32,9 @@ export default class MainUI extends React.Component {
             } else {
                 nodes[nextNode.value].push(nextNode.children);
             }
-        }
-        this.setState({currentNode: nodes, isLoading:false})
+        } 
+        const newPath = this.state.path + path;
+        this.setState({currentNode: nodes, isLoading:false, path: newPath})
     }
 
     handleClickedPath = (clickedPath, relevantNodes) => {
@@ -42,13 +44,13 @@ export default class MainUI extends React.Component {
         if(!children[0][0]){
             return;
         }
-
         //Create a new node and set it to the main node
         const newNode = new TreeNode(clickedPath);
         for (let i = 0; i < children.length; i++){
             newNode.children.push(children[i][0])
         }
-        this.organizeNodes(newNode);
+        const pathToAdd = clickedPath + "/";
+        this.organizeNodes(newNode, pathToAdd);
     }
     
     isEmpty = (obj) => { 
@@ -60,7 +62,7 @@ export default class MainUI extends React.Component {
     }
 
     render(){
-        let {currentNode} = this.state;
+        let {currentNode, path} = this.state;
          if (!this.isEmpty(currentNode)) {
             return (
                 <div>
@@ -70,6 +72,7 @@ export default class MainUI extends React.Component {
                     handleClickedPath={this.handleClickedPath} 
                     currentNode={currentNode} 
                     folderOrFileName={onePath}
+                    path={path}
                     />
                 )}
                 </div>

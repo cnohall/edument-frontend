@@ -1,11 +1,18 @@
 .App {
-  text-align: center;
-
+  text-align: center; 
 }
 
-.folderName {
+.formInput {
   font-size: 20px;
   padding: 3px;
+  font-family: 'Roboto Condensed'
+  
+}
+
+.button {
+  font-size: 20px;
+  padding: 3px;
+  font-family: 'Roboto Condensed'
 }
 
 .searchResults {
